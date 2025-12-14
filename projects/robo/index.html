@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Robô Interativo JS</title>
+    <style>
+        /* Estilo básico para o robozinho */
+        #robo {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background-color: #4CAF50; /* Verde */
+            border-radius: 50% 50% 10px 10px;
+            text-align: center;
+            line-height: 50px;
+            font-size: 30px;
+            cursor: pointer;
+            transition: transform 0.1s linear; /* Animação suave */
+        }
+        .balao-fala {
+            position: absolute;
+            bottom: 60px;
+            right: -20px;
+            background-color: white;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.3);
+            display: none; /* Escondido por padrão */
+            font-size: 14px;
+            width: 150px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="robo">
+        🤖
+        <div class="balao-fala" id="balao">
+            Olá! Cliquei em mim!
+        </div>
+    </div>
+
+    <script src="src/robo.js"></script>
+
+</body>
+</html>

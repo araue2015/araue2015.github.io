@@ -2,7 +2,7 @@
 layout: default
 ---
 
-## About me
+## About Me
 
 _yay_
 
