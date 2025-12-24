@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Capybara Hacker</title>
+
+<!-- FIREBASE -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+<script>
+/* 🔑 COLOQUE A SUA API KEY AQUI */
+var firebaseConfig = {
+  apiKey: "SUA_API_KEY",
+  authDomain: "SEU_PROJETO.firebaseapp.com",
+  databaseURL: "https://SEU_PROJETO.firebaseio.com",
+  projectId: "SEU_PROJETO",
+  storageBucket: "SEU_PROJETO.appspot.com",
+  messagingSenderId: "ID",
+  appId: "APP_ID"
+};
+firebase.initializeApp(firebaseConfig);
+var database = firebase.database();
+</script>
+
+<style>
+body {
+  background: black;
+  color: #00ff00;
+  font-family: monospace;
+  text-align: center;
+  padding: 20px;
+}
+
+input, button {
+  background: black;
+  color: #00ff00;
+  border: 2px solid #00ff00;
+  padding: 10px;
+  margin: 5px;
+  font-family: monospace;
+}
+
+button:hover {
+  background: #00ff00;
+  color: black;
+  cursor: pointer;
+}
+
+.capy {
+  white-space: pre;
+  margin: 20px;
+}
+
+.rolo {
+  font-size: 40px;
+  letter-spacing: 15px;
+  margin: 20px;
+}
+
+.box {
+  border: 1px solid #00ff00;
+  padding: 10px;
+  margin: 10px auto;
+  max-width: 420px;
+  white-space: pre-line;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🟢 CAPYBARA HACKER 🟢</h1>
+<p>Jogo de sorte online</p>
+
+<div class="capy">
+   /\_/\  
+  ( o.o )  &lt; HACKER &gt;
+   > ^ <
+</div>
+
+<input id="nome" placeholder="seu nome">
+<br>
+<button onclick="rodar()">RODAR</button>
+
+<div class="rolo" id="rolo">$ = ¤</div>
+<div class="box" id="resultado"></div>
+
+<h2>🏆 RESULTADOS ONLINE</h2>
+<div class="box" id="primeiro">🥇 1º Lugar: —</div>
+<div class="box" id="segundo">🥈 2º Lugar: —</div>
+<div class="box" id="terceiro">🥉 3º Lugar: —</div>
+
+<h3>😵 Perdedor(es)</h3>
+<div class="box" id="perdedores">ninguém ainda</div>
+
+<script>
+const simbolos = ["$", "=", "¤"];
+
+function nomeValido(nome) {
+  return /^[a-zA-Z0-9]{3,12}$/.test(nome);
+}
+
+function rodar() {
+  const nome = document.getElementById("nome").value.trim();
+  const rolo = document.getElementById("rolo");
+  const res = document.getElementById("resultado");
+
+  if (!nomeValido(nome)) {
+    res.innerText = "❌ Nome inválido";
+    return;
+  }
+
+  let s1, s2, s3;
+  let count = 0;
+
+  const anim = setInterval(() => {
+    s1 = simbolos[Math.floor(Math.random()*3)];
+    s2 = simbolos[Math.floor(Math.random()*3)];
+    s3 = simbolos[Math.floor(Math.random()*3)];
+    rolo.innerText = s1 + " " + s2 + " " + s3;
+    count++;
+    if (count > 15) {
+      clearInterval(anim);
+      calcularResultado(nome, s1, s2, s3);
+    }
+  }, 100);
+}
+
+function calcularResultado(nome, a, b, c) {
+  let lugar = 0;
+  let pontos = 1;
+  let texto = "";
+
+  /* 🥇 1º lugar */
+  if (
+    (a === b && b === c)
+  ) {
+    lugar = 1;
+    pontos = 1000;
+    texto = "🥇 1º LUGAR\n+1000 pontos";
+  }
+
+  /* 🥈 2º lugar */
+  else if (
+    (a === b && b !== c) ||
+    (a !== b && b === c)
+  ) {
+    lugar = 2;
+    pontos = 759;
+    texto = "🥈 2º LUGAR\n+759 pontos";
+  }
+
+  /* 🥉 3º lugar */
+  else if (
+    (a === c && b !== a)
+  ) {
+    lugar = 3;
+    pontos = 100;
+    texto = "🥉 3º LUGAR\n+100 pontos";
+  }
+
+  /* 😵 sem sorte */
+  else {
+    lugar = 0;
+    pontos = 1;
+    texto = "😵 SEM SORTE\n+1 ponto";
+  }
+
+  document.getElementById("resultado").innerText =
+    nome + "\n" + texto;
+
+  salvarResultado(nome, lugar);
+}
+
+function salvarResultado(nome, lugar) {
+  if (lugar === 1) {
+    database.ref("resultados/primeiro").set(nome);
+  } else if (lugar === 2) {
+    database.ref("resultados/segundo").set(nome);
+  } else if (lugar === 3) {
+    database.ref("resultados/terceiro").set(nome);
+  } else {
+    database.ref("resultados/perdedores").push(nome);
+  }
+}
+
+/* 🔴 ATUALIZA ONLINE */
+database.ref("resultados/primeiro").on("value", s => {
+  document.getElementById("primeiro").innerText =
+    "🥇 1º Lugar: " + (s.val() || "—");
+});
+
+database.ref("resultados/segundo").on("value", s => {
+  document.getElementById("segundo").innerText =
+    "🥈 2º Lugar: " + (s.val() || "—");
+});
+
+database.ref("resultados/terceiro").on("value", s => {
+  document.getElementById("terceiro").innerText =
+    "🥉 3º Lugar: " + (s.val() || "—");
+});
+
+database.ref("resultados/perdedores").on("value", snap => {
+  let lista = "";
+  snap.forEach(c => lista += "- " + c.val() + "\n");
+  document.getElementById("perdedores").innerText =
+    lista || "ninguém ainda";
+});
+</script>
+
+</body>
+</html>
