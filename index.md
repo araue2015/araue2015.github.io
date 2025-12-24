@@ -15,3 +15,4 @@ My projects:
 * [virus fake é totalmente seguro](projects/Virus.html)
 * [Pet para brincar](projects/Pettoch.html)
 * [jogo de aposta](projects/Capybarahacker.html)
+* [jogo de clicker](projects/Capybaraclicker.html)
