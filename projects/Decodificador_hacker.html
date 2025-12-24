@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Hacker Troladão</title>
+<style>
+    body {
+        background: black;
+        color: #00ff00;
+        font-family: monospace;
+        padding: 20px;
+    }
+    #output {
+        margin-top: 20px;
+        white-space: pre;
+        font-size: 18px;
+    }
+    input {
+        background: #111;
+        border: 1px solid #00ff00;
+        padding: 10px;
+        color: #00ff00;
+        width: 300px;
+        font-size: 16px;
+    }
+    button {
+        background: #00ff00;
+        border: none;
+        padding: 10px;
+        font-size: 16px;
+        cursor: pointer;
+        color: black;
+        font-weight: bold;
+    }
+</style>
+</head>
+<body>
+
+<h1>💀 HACKER TROLADÃO DECODIFICADOR 💀</h1>
+<p>Digite uma palavra para ver o "código secreto" dela:</p>
+
+<input id="entrada" placeholder="Digite aqui...">
+<button onclick="decodificar()">HACK!</button>
+
+<div id="output"></div>
+
+<script>
+function decodificar() {
+    const palavra = document.getElementById("entrada").value;
+    let codigos = "";
+    let saida = "";
+
+    for (let i = 0; i < palavra.length; i++) {
+        const letra = palavra[i];
+        const codigo = letra.charCodeAt(0); 
+        codigos += letra + " → " + codigo + "\n";
+        saida += letra;
+    }
+
+    document.getElementById("output").innerText =
+        "=== CÓDIGOS SECRETOS ===\n" +
+        codigos +
+        "\n=== PALAVRA REAL ===\n" +
+        saida +
+        "\n\no haker troladão 😎💻";
+}
+</script>
+
+</body>
+</html>
