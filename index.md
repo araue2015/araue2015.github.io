@@ -14,3 +14,4 @@ My projects:
 * [Decodificador Hacker](projects/Decodificador_hacker.html)
 * [virus fake é totalmente seguro](projects/Virus.html)
 * [Pet para brincar](projects/Pettoch.html)
+* [jogo de aposta](projects/Capybarahacker.html)
