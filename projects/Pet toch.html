@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Toch Pet Completo</title>
+
+<style>
+    body {
+        background: #8bd48a;
+        text-align: center;
+        font-family: Arial, sans-serif;
+        transition: background 0.5s;
+    }
+
+    #toch-area {
+        margin-top: 30px;
+        height: 330px;
+        position: relative;
+    }
+
+    /* --- CABEÇA TOCH --- */
+    #cabeca {
+        width: 140px;
+        height: 140px;
+        background: #3daa3d;
+        border-radius: 15px;
+        margin: auto;
+        position: relative;
+        transition: transform 0.2s;
+        animation: mexerCabeca 2s infinite ease-in-out;
+    }
+
+    @keyframes mexerCabeca {
+        0% { transform: rotate(0deg); }
+        50% { transform: rotate(8deg); }
+        100% { transform: rotate(0deg); }
+    }
+
+    .olho {
+        width: 30px;
+        height: 30px;
+        background: black;
+        position: absolute;
+        top: 35px;
+        border-radius: 4px;
+    }
+
+    #olho1 { left: 25px; }
+    #olho2 { right: 25px; }
+
+    #boca {
+        width: 60px;
+        height: 35px;
+        background: black;
+        position: absolute;
+        bottom: 20px;
+        left: 40px;
+        border-radius: 4px;
+    }
+
+    /* --- CORPO --- */
+    #corpo {
+        width: 110px;
+        height: 120px;
+        background: #3daa3d;
+        border-radius: 10px;
+        margin: auto;
+        margin-top: 5px;
+    }
+
+    /* --- PERNAS --- */
+    .perna {
+        width: 40px;
+        height: 50px;
+        background: #3daa3d;
+        border-radius: 5px;
+        position: absolute;
+        animation: moverPernas 1.5s infinite ease-in-out;
+    }
+
+    @keyframes moverPernas {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(5px); }
+        100% { transform: translateY(0px); }
+    }
+
+    #p1 { bottom: 0; left: calc(50% - 60px); }
+    #p2 { bottom: 0; left: calc(50% - 20px); }
+    #p3 { bottom: 0; left: calc(50% + 20px); }
+    #p4 { bottom: 0; left: calc(50% + 60px); }
+
+    /* --- BOTÕES --- */
+    button {
+        margin: 10px;
+        font-size: 18px;
+        padding: 12px 20px;
+        border-radius: 15px;
+        border: none;
+        background: #fff;
+        box-shadow: 0 3px 4px rgba(0,0,0,0.3);
+    }
+
+    button:active {
+        transform: scale(0.9);
+    }
+
+    /* Gotas banho */
+    .gota {
+        width: 10px;
+        height: 15px;
+        background: #00bfff;
+        border-radius: 50%;
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        animation: cair 1s linear forwards;
+    }
+
+    @keyframes cair {
+        from { top: -20px; }
+        to { top: 200px; opacity: 0; }
+    }
+
+    /* Mini jogo */
+    #jogo {
+        width: 300px;
+        height: 200px;
+        background: #6495ed;
+        margin: 20px auto;
+        display: none;
+        border-radius: 10px;
+        position: relative;
+    }
+
+    #toch-jogo {
+        width: 40px;
+        height: 40px;
+        background: #3daa3d;
+        border-radius: 5px;
+        position: absolute;
+        bottom: 0;
+        left: 20px;
+        transition: 0.1s;
+    }
+</style>
+</head>
+<body>
+
+<h1>Toch Pet</h1>
+
+<div id="toch-area">
+
+    <div id="cabeca">
+        <div id="olho1" class="olho"></div>
+        <div id="olho2" class="olho"></div>
+        <div id="boca"></div>
+    </div>
+
+    <div id="corpo"></div>
+
+    <div id="p1" class="perna"></div>
+    <div id="p2" class="perna"></div>
+    <div id="p3" class="perna"></div>
+    <div id="p4" class="perna"></div>
+
+</div>
+
+<!-- MINI JOGO -->
+<div id="jogo">
+    <div id="toch-jogo"></div>
+</div>
+
+<!-- BOTÕES -->
+<button onclick="carinho()">Carinho</button>
+<button onclick="banho()">Banho</button>
+<button onclick="alimentar()">Alimentar</button>
+<button onclick="brincar()">Brincar</button>
+<button onclick="dormir()">Dormir/Luz</button>
+
+<script>
+
+let luzApagada = false;
+
+/* --- CARINHO --- */
+function carinho() {
+    alert("Pai... que gostoso 😄");
+}
+
+/* --- BANHO COM GOTAS --- */
+function banho() {
+    alert("Toch tomando banho 💦");
+
+    for (let i = 0; i < 10; i++) {
+        let gota = document.createElement("div");
+        gota.className = "gota";
+        gota.style.left = (120 + Math.random() * 60) + "px";
+        document.getElementById("toch-area").appendChild(gota);
+        setTimeout(() => gota.remove(), 1000);
+    }
+}
+
+/* --- ALIMENTAR --- */
+function alimentar() {
+    alert("Toch comendo pólvora 😋");
+}
+
+/* --- MINI JOGO --- */
+function brincar() {
+    alert("Vamos brincar 😁");
+    document.getElementById("jogo").style.display = "block";
+
+    const tochJogo = document.getElementById("toch-jogo");
+    let pos = 20;
+    let pulando = false;
+
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowRight") pos += 10;
+        if (e.key === "ArrowLeft") pos -= 10;
+        if (e.key === " " && !pulando) {
+            pulando = true;
+            tochJogo.style.bottom = "80px";
+            setTimeout(() => {
+                tochJogo.style.bottom = "0px";
+                pulando = false;
+            }, 300);
+        }
+        tochJogo.style.left = pos + "px";
+    });
+}
+
+/* --- DORMIR / LUZ --- */
+function dormir() {
+    luzApagada = !luzApagada;
+
+    if (luzApagada) {
+        document.body.style.background = "#002200";
+        alert("Boa noite pai 😴");
+    } else {
+        document.body.style.background = "#8bd48a";
+        alert("Bom dia pai ☀️");
+    }
+}
+
+</script>
+
+</body>
+</html>
