@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Capybara Clicker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: #d2f7c0;
+        }
+
+        h1 {
+            margin-top: 20px;
+        }
+
+        /* ANIMAÇÃO */
+        @keyframes balancar {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-6px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* Capivara */
+        .capy {
+            width: 200px;
+            height: 120px;
+            background: #b87b4a;
+            margin: 40px auto;
+            border-radius: 100px 100px 60px 60px;
+            position: relative;
+            cursor: pointer;
+            animation: balancar 2s infinite;
+        }
+
+        .capy:active {
+            transform: scale(0.9);
+            animation: none;
+        }
+
+        /* Cabeça */
+        .capy::before {
+            content: "";
+            position: absolute;
+            width: 120px;
+            height: 85px;
+            background: #b87b4a;
+            border-radius: 80px 80px 50px 50px;
+            left: -65px;
+            top: 18px;
+        }
+
+        /* Olho */
+        .eye {
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            background: #000;
+            border-radius: 50%;
+            left: -25px;
+            top: 45px;
+        }
+
+        /* Orelhas */
+        .ear {
+            position: absolute;
+            width: 35px;
+            height: 25px;
+            background: #8c5a34;
+            border-radius: 50px 50px 10px 10px;
+            top: -10px;
+            left: -20px;
+            transform: rotate(-10deg);
+        }
+
+        .ear2 {
+            position: absolute;
+            width: 35px;
+            height: 25px;
+            background: #8c5a34;
+            border-radius: 50px 50px 10px 10px;
+            top: -12px;
+            left: 10px;
+            transform: rotate(10deg);
+        }
+
+        /* PÉS DA CAPIVARA */
+        .foot {
+            position: absolute;
+            width: 40px;
+            height: 20px;
+            background: #8c5a34;
+            border-radius: 20px;
+            bottom: -10px;
+            left: 20px;
+        }
+
+        .foot2 {
+            position: absolute;
+            width: 40px;
+            height: 20px;
+            background: #8c5a34;
+            border-radius: 20px;
+            bottom: -10px;
+            right: 20px;
+        }
+
+        .box {
+            background: #ffffffc7;
+            width: 250px;
+            margin: 20px auto;
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0px 0px 10px #0003;
+        }
+
+        button {
+            padding: 10px;
+            border: none;
+            margin: 5px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Capybara Clicker</h1>
+
+    <!-- Capivara -->
+    <div class="capy" id="capy">
+        <div class="ear"></div>
+        <div class="ear2"></div>
+        <div class="eye"></div>
+
+        <!-- pés -->
+        <div class="foot"></div>
+        <div class="foot2"></div>
+    </div>
+
+    <div class="box">
+        <h2>Clicks: <span id="contador">0</span></h2>
+        <button onclick="comprarUpgrade()">Comprar Upgrade (+1 por clique)</button>
+    </div>
+
+    <script>
+        let pontos = 0;
+        let upgrade = 1;
+
+        const contador = document.getElementById("contador");
+        const capy = document.getElementById("capy");
+
+        capy.addEventListener("click", () => {
+            pontos += upgrade;
+            contador.textContent = pontos;
+        });
+
+        function comprarUpgrade() {
+            if (pontos >= 20) {
+                pontos -= 20;
+                upgrade++;
+                contador.textContent = pontos;
+                alert("Upgrade comprado! Agora você ganha +" + upgrade + " por clique.");
+            } else {
+                alert("Você precisa de 20 pontos!");
+            }
+        }
+    </script>
+
+</body>
+</html>
