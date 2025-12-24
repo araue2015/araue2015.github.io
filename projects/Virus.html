@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Virus</title>
+<style>
+    body {
+        background: black;
+        color: lime;
+        font-family: monospace;
+        font-size: 20px;
+    }
+    #terminal {
+        white-space: pre-line;
+    }
+</style>
+</head>
+<body>
+<div id="terminal">INICIANDO SISTEMA...</div>
+
+<script>
+let msgs = [
+    "Carregando módulos...",
+    "Acessando arquivos...",
+    "Analisando sistema...",
+    "⚠ ALERTA: Atividade suspeita detectada!",
+    "Tentando conter ameaça...",
+    "Erro... falha crítica!",
+    "Vírus encontrado!",
+    "Executando protocolo de emergência...",
+    "3...",
+    "2...",
+    "1...",
+    "virus trolado não aconteceu nada com o seu celular kkkkkkk"
+];
+
+let i = 0;
+function mostrar(){
+    document.getElementById("terminal").innerText += "\n" + msgs[i];
+    i++;
+    if(i < msgs.length){
+        setTimeout(mostrar, 800);
+    }
+}
+setTimeout(mostrar, 1000);
+</script>
+
+</body>
+</html>
