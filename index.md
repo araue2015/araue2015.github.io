@@ -16,3 +16,4 @@ My projects:
 * [Pet para brincar](projects/Pettoch.html)
 * [jogo de aposta](projects/Capybarahacker.html)
 * [jogo de clicker](projects/Capybaraclicker.html)
+* [xadrez open](projects/Xadres.html)
