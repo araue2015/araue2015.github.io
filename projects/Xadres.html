@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Xadrez vs Bot</title>
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background: #222;
+    color: #fff;
+  }
+
+  h1 { margin-top: 10px; }
+  #score { margin: 10px; font-size: 20px; }
+
+  #board {
+    display: grid;
+    grid-template-columns: repeat(8, 60px);
+    width: 480px;
+    margin: 20px auto;
+    border: 3px solid #fff;
+  }
+
+  .square {
+    width: 60px;
+    height: 60px;
+    font-size: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .white { background: #f0d9b5; }
+  .black { background: #b58863; }
+
+  .selected {
+    outline: 3px solid red;
+  }
+</style>
+</head>
+
+<body>
+
+<h1>♟️ Xadrez vs Bot 🤖</h1>
+<p>Você joga com as peças brancas</p>
+<div id="score">Pontuação - Jogador: 0 | Bot: 0</div>
+<div id="board"></div>
+<div id="message"></div>
+
+<script>
+const boardElement = document.getElementById("board");
+const scoreElement = document.getElementById("score");
+const messageElement = document.getElementById("message");
+
+const pieces = {
+  r:"♜", n:"♞", b:"♝", q:"♛", k:"♚", p:"♟",
+  R:"♖", N:"♘", B:"♗", Q:"♕", K:"♔", P:"♙"
+};
+
+let board = [
+  "rnbqkbnr",
+  "pppppppp",
+  "........",
+  "........",
+  "........",
+  "........",
+  "PPPPPPPP",
+  "RNBQKBNR"
+];
+
+let selected = null;
+let turn = "white";
+let playerScore = 0;
+let botScore = 0;
+
+function drawBoard() {
+  boardElement.innerHTML = "";
+  for (let y = 0; y < 8; y++) {
+    for (let x = 0; x < 8; x++) {
+      const square = document.createElement("div");
+      square.className = "square " + ((x + y) % 2 ? "black" : "white");
+
+      if (selected && selected.x === x && selected.y === y) {
+        square.classList.add("selected");
+      }
+
+      const piece = board[y][x];
+      if (piece !== ".") square.textContent = pieces[piece];
+
+      square.onclick = () => clickSquare(x, y);
+      boardElement.appendChild(square);
+    }
+  }
+}
+
+function clickSquare(x, y) {
+  if (turn !== "white") return;
+
+  const piece = board[y][x];
+
+  if (!selected) {
+    if (piece !== "." && piece === piece.toUpperCase()) {
+      selected = {x, y};
+    }
+  } else {
+    move(selected.x, selected.y, x, y);
+    selected = null;
+    drawBoard();
+    if (checkWin()) return;
+    turn = "bot";
+    setTimeout(botMove, 500);
+  }
+}
+
+function move(x1, y1, x2, y2) {
+  let row1 = board[y1].split("");
+  let piece = row1[x1];
+  row1[x1] = ".";
+  board[y1] = row1.join("");
+
+  let row2 = board[y2].split("");
+  row2[x2] = piece;
+  board[y2] = row2.join("");
+}
+
+function botMove() {
+  let moves = [];
+
+  for (let y = 0; y < 8; y++) {
+    for (let x = 0; x < 8; x++) {
+      let p = board[y][x];
+      if (p !== "." && p === p.toLowerCase()) {
+        let ny = y + 1;
+        if (ny < 8 && board[ny][x] === ".") {
+          moves.push({x1:x, y1:y, x2:x, y2:ny});
+        }
+      }
+    }
+  }
+
+  if (moves.length > 0) {
+    let m = moves[Math.floor(Math.random() * moves.length)];
+    move(m.x1, m.y1, m.x2, m.y2);
+  }
+
+  drawBoard();
+  if (checkWin()) return;
+  turn = "white";
+}
+
+function checkWin() {
+  let flat = board.join("");
+  if (!flat.includes("K")) {
+    playerScore += 100;
+    updateScore();
+    messageElement.textContent = "🏆 Você ganhou! +100 pontos";
+    resetBoard();
+    return true;
+  } else if (!flat.includes("k")) {
+    botScore += 100;
+    updateScore();
+    messageElement.textContent = "🤖 Bot ganhou! +100 pontos";
+    resetBoard();
+    return true;
+  }
+  return false;
+}
+
+function updateScore() {
+  scoreElement.textContent = `Pontuação - Jogador: ${playerScore} | Bot: ${botScore}`;
+}
+
+function resetBoard() {
+  board = [
+    "rnbqkbnr",
+    "pppppppp",
+    "........",
+    "........",
+    "........",
+    "........",
+    "PPPPPPPP",
+    "RNBQKBNR"
+  ];
+  turn = "white";
+  selected = null;
+  setTimeout(() => {
+    messageElement.textContent = "";
+    drawBoard();
+  }, 1500);
+}
+
+drawBoard();
+</script>
+
+</body>
+</html>
